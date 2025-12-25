@@ -9,4 +9,5 @@ class Rainfall(Base):
     station_name = Column(String(50), nullable=False)
     timestamp = Column(DateTime, nullable=False)
     rainfall = Column(Float, nullable=False)
+    rainfall_day = Column(Float, nullable=False)
     created_at = Column(DateTime, nullable=False, server_default=func.now())
