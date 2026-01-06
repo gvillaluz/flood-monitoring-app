@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "888178207414",
+    "project_id": "flood-monitoring-mobile-469c3",
+    "storage_bucket": "flood-monitoring-mobile-469c3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:888178207414:android:823ae35b798523dd69d417",
+        "android_client_info": {
+          "package_name": "com.kian.floodmonitoring"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1uspiheDcetoD2LcSUYwMxDdG0BWjeas"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
