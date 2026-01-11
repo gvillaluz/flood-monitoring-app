@@ -2,15 +2,17 @@ import { getCurrentLocation } from "../utils/location";
 import { Evacuation, Hotlines } from "../types/Evacuation";
 import { fetchEmergencyHotlines, fetchEvacuationCenters } from "@/src/api/emergency";
 import { calculateDistance } from "@/src/utils/distance";
-import { getCacheCentersAndHotlines, setCacheCentersAndHotlines } from "@/src/utils/cache";
+import { getCacheCentersAndHotlines, refreshEmergencyCache, setCacheCentersAndHotlines } from "@/src/utils/cache";
 import { checkConnectivty } from "@/src/utils/netinfo";
 
 async function resolveEmergencyData(isConnected: boolean) {
     try {
-        const isConnected = await checkConnectivty()
         const cache = await getCacheCentersAndHotlines()
 
-        if (cache?.data && !cache.isExpired) {
+        if (cache?.data) {
+            if (isConnected && cache.isExpired)
+                await refreshEmergencyCache()
+
             return {
                 evacuationCenters: cache.data.evacuationCenters,
                 emergencyHotlines: cache.data.emergencyHotlines,
@@ -50,7 +52,7 @@ function mapEmergencyData(
     location: {
         latitude: number,
         longitude: number
-    }
+    } | null
 ) {
     const mappedCenters = centers
         .map((c: any) => ({
@@ -89,7 +91,7 @@ export async function getEmergencyData(
     location: {
         latitude: number,
         longitude: number
-    }
+    } | null
 ) {
     const result = await resolveEmergencyData(isConnected)
     
@@ -99,7 +101,7 @@ export async function getEmergencyData(
     const data = mapEmergencyData(
         result.evacuationCenters,
         result.emergencyHotlines,
-        location
+        location ?? null
     )
 
     if (!data || !data.mappedCenters || !data.mappedHotlines)

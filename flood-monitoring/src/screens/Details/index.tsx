@@ -1,11 +1,11 @@
 import GradientHeader from "@/src/components/GradientHeader"
-import { ScrollView, View } from "react-native"
+import { RefreshControl, ScrollView, View } from "react-native"
 import DetailedReadings from "./components/DetailedReadings"
 import Level from "./components/Level"
 import { useFlood } from "@/src/hooks/useFlood"
 
 export default function DetailScreen() {
-    const { waterLevels } = useFlood()
+    const { waterLevels, refreshing, onRefresh } = useFlood()
 
     const peakLevel = waterLevels.reduce((prev, curr) => (curr.waterLevel > prev.waterLevel ? curr : prev), waterLevels[0])
     const lowestLevel = waterLevels.reduce((prev, curr) => (curr.waterLevel < prev.waterLevel ? curr : prev), waterLevels[0])
@@ -13,6 +13,14 @@ export default function DetailScreen() {
     return (
         <ScrollView
             className="bg-pink_white"
+            refreshControl={
+                <RefreshControl 
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                    colors={['#009964']}
+                    tintColor={'#009964'}
+                />
+            }
         >
             <GradientHeader 
                 colors={['rgba(241, 83, 0, 1)', 'rgba(237, 201, 141, 1)']}

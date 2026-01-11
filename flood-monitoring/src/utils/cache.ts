@@ -1,9 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const EMERGENCY_CACHE_KEY = "evacuation-centers and emergency-hotlines"
+const EMERGENCY_CACHE_KEY = "evacuation_centers_and_emergency_hotlines"
 const EMERGENCY_CACHE_TTL = 24 * 60 * 60 * 1000
 
-const WATER_CACHE_KEY = "water-levels";
+const WATER_CACHE_KEY = "water_levels";
 const WATER_CACHE_TTL = 3 * 60 * 1000;
 
 export async function setCacheCentersAndHotlines(data: any) {
@@ -14,12 +14,28 @@ export async function getCacheCentersAndHotlines() {
     return await getWithTTL(EMERGENCY_CACHE_KEY, EMERGENCY_CACHE_TTL)
 }
 
+export async function refreshEmergencyCache() {
+    await AsyncStorage.removeItem(EMERGENCY_CACHE_KEY)
+}
+
 export async function setCacheWaterLevels(data: any) {
     await setWithTTL(WATER_CACHE_KEY, data)
 }
 
 export async function getCacheWaterLevels() {
     return await getWithTTL(WATER_CACHE_KEY, WATER_CACHE_TTL)
+}
+
+export async function setIsOnboarded(isOnBoarded: boolean) {
+    await AsyncStorage.setItem("isOnBoarded", JSON.stringify(isOnBoarded))
+}
+
+export async function getIsOnboarded() {
+    let data = await AsyncStorage.getItem("isOnBoarded")
+
+    if (data) JSON.parse(data)
+
+    return data
 }
 
 // export async function setOfflineCacheWaterLevel(data: any) {

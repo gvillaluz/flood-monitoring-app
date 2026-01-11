@@ -8,10 +8,12 @@ from app.routes.live_data_routes import router as live_data_router
 from app.routes.evacuation_routes import router as evacuation_router
 from app.routes.hotline_routes import router as hotline_router
 from app.routes.notification_routes import router as notification_router
+from app.firebase_config import init_firebase
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("The server is starting")
+    init_firebase()
     start_scheduler()
     yield
 

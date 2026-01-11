@@ -4,13 +4,14 @@ import { useRouter } from "expo-router";
 import { useEffect } from "react";
 import { ActivityIndicator, View } from "react-native";
 import LigtasCheckLogo from '../components/LigtasCheckLogo';
+import { getIsOnboarded } from '../utils/cache';
 
 export default function Index() {
   const router = useRouter();
 
   useEffect(() => {
     const checkOnBoard = async () => {
-      const hasSeenOnBoard = await AsyncStorage.getItem('hasSeenOnBoard')
+      const hasSeenOnBoard = await getIsOnboarded()
 
       await new Promise(resolve => setTimeout(resolve, 1500))
 
@@ -22,7 +23,6 @@ export default function Index() {
     }
 
     NavigationBar.setVisibilityAsync("hidden");
-    //NavigationBar.setBehaviorAsync("overlay-swipe");
 
     checkOnBoard();
   }, []);

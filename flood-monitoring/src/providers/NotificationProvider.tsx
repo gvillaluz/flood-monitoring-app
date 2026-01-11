@@ -15,18 +15,27 @@ export function NotificationProvider({ children }: {children: React.ReactNode} )
         if (Platform.OS === 'android') {
             await Notifications.setNotificationChannelAsync('warning-alerts', {
                 name: 'Emergency Flood Warnings',
-                importance: Notifications.AndroidImportance.MAX,
-                vibrationPattern: [0, 500, 200, 500],
+                importance: Notifications.AndroidImportance.DEFAULT,
+                vibrationPattern: [0, 250],
                 showBadge: true
             })
 
             await Notifications.setNotificationChannelAsync('critical-alerts', {
                 name: 'Emergency Critical Flood Alerts',
                 importance: Notifications.AndroidImportance.MAX,
-                vibrationPattern: [0, 500, 200, 500],
+                vibrationPattern: [0, 500, 200, 500, 200, 500],
                 showBadge: true
             })
         }
+
+        Notifications.setNotificationHandler({
+            handleNotification: async () => ({
+                shouldSetBadge: true,
+                shouldPlaySound: true,
+                shouldShowBanner: true,
+                shouldShowList: true
+            }),
+        })
     }
 
     const syncDeviceToken = async () => {
@@ -72,13 +81,7 @@ export function NotificationProvider({ children }: {children: React.ReactNode} )
     }, [])
 
     useEffect(() => {
-        const syncToken = async () => {
-            if (isConnected) {
-                syncDeviceToken()
-            }
-        }
-
-        syncToken()
+        syncDeviceToken()
     }, [isConnected])
 
     return <NotificationContext.Provider value={null}>

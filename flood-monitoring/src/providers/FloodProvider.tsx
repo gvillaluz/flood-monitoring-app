@@ -13,6 +13,7 @@ export function FloodProvider({ children }: FloodProviderProps) {
     const [waterLevels, setWaterLevels] = useState<WaterLevel[]>([])
     const [prediction, setPrediction] = useState<Prediction>()
     const [risk, setRisk] = useState<string>("")
+    const [refreshing, setRefreshing] = useState<boolean>(false)
     
     const timeoutRef = useRef<ReturnType<typeof setTimeout>>(null)
     const intervalRef = useRef<ReturnType<typeof setInterval>>(null)
@@ -23,12 +24,13 @@ export function FloodProvider({ children }: FloodProviderProps) {
     const loadData = async (): Promise<void> => {
         try {
             const data = await getWaterLevels(isConnected)
-
-            console.log(data.source)
+            
             setWaterLevels(data.waterLevels)
         } catch (err) {
             console.log("Unable to fetch data. -- FloodProvider")
             console.log(err)
+        } finally {
+            setRefreshing(false)
         }
     }
 
@@ -68,10 +70,18 @@ export function FloodProvider({ children }: FloodProviderProps) {
         }
     }, [isConnected])
 
+    const onRefresh = () => {
+        setRefreshing(true)
+        loadData()
+        startPolling()
+    }
+
     const data = {
         waterLevels,
         prediction,
-        risk
+        risk,
+        onRefresh,
+        refreshing
     }
 
     return <FloodContext.Provider value={data}>

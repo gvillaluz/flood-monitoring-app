@@ -18,7 +18,9 @@ export interface Prediction {
 export interface FloodContextValue {
     waterLevels: WaterLevel[],
     prediction?: Prediction,
-    risk: string
+    risk: string,
+    onRefresh: () => void,
+    refreshing: boolean
 }
 
 export interface FloodProviderProps {

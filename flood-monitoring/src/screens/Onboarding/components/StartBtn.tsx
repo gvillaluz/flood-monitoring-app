@@ -1,10 +1,12 @@
+import { setIsOnboarded } from "@/src/utils/cache";
 import { useRouter } from "expo-router";
 import { Text, TouchableOpacity } from "react-native";
 
 export default function StartBtn() {
     const router = useRouter();
 
-    const getStarted = () => {
+    const getStarted = async () => {
+        await setIsOnboarded(true)
         router.replace('/home')
     }
     

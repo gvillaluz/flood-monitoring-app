@@ -1,5 +1,5 @@
 import GradientHeader from "@/src/components/GradientHeader";
-import { ActivityIndicator, Alert, ScrollView, View } from "react-native";
+import { ActivityIndicator, Alert, RefreshControl, ScrollView, View } from "react-native";
 import Contacts from "./components/Contacts";
 import SafeZones from "./components/SafeZones";
 import { useEffect, useState } from "react";
@@ -13,14 +13,31 @@ import { useNetwork } from "@/src/hooks/useNetwork";
 export default function SafetyScreen() {
     const { isConnected } = useNetwork()
 
+    const [location, setLocation] = useState<{latitude: number, longitude: number} | null>(null)
     const [centers, setCenters] = useState<Evacuation[]>([])
     const [hotlines, setHotlines] = useState<Hotlines[]>([])
     const [loading, setLoading] = useState<boolean>(true)
     const [isNavigating, setIsNavigating] = useState<string | null>(null)
-    // const [location, setLocation] = useState<{
-    //     latitude: number,
-    //     longitude: number
-    // } | null>(null)
+    const [refreshing, setRefreshing] = useState<boolean>(false)
+
+    const setLocationAndCenters = async () => {
+            try {
+                const location = await getCurrentLocation()
+
+                if (location) 
+                    setLocation(location)
+
+                const { centers, hotlines } = await getEmergencyData(isConnected, location)
+
+                setCenters(centers)
+                setHotlines(hotlines)
+            } catch (err) {
+                console.log("This function" + err)
+            } finally {
+                setLoading(false)
+                setRefreshing(false)
+            }
+        }
 
     const navigateCenter = async (centerName: string, lat: number, long: number) => {
         setIsNavigating(centerName)
@@ -49,32 +66,26 @@ export default function SafetyScreen() {
         callNumber(number)
     }
 
+    const onRefresh = () => {
+        setRefreshing(true)
+        setLocationAndCenters()
+    }
+
     useEffect(() => {
-        const setLocationAndCenters = async () => {
-            try {
-                const location = await getCurrentLocation()
-
-                if (!location || !location.latitude || !location.longitude)
-                    Alert.alert("Location unavailable")
-
-                const { centers, hotlines } = await getEmergencyData(isConnected, location)
-
-                setCenters(centers)
-                setHotlines(hotlines)
-            } catch (err) {
-                console.log(err)
-                Alert.alert("Emergency data is temporarily unavailable")
-            } finally {
-                setLoading(false)
-            }
-        }
-        
         setLocationAndCenters()
     }, [])
 
     return (
         <ScrollView
             className="bg-pink_white"
+            refreshControl={
+                <RefreshControl 
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                    colors={['#009964']}
+                    tintColor={'#009964'}
+                />
+            }
         >
             <GradientHeader 
                 colors={['rgba(0, 153, 100, 1)', 'rgba(82, 216, 70, 1)']}
@@ -90,7 +101,7 @@ export default function SafetyScreen() {
                 <View
                     className="px-7 mt-[-60px] gap-5 pb-7"
                 >
-                    <SafeZones values={centers} navigateCenter={navigateCenter} isNavigating={isNavigating} />
+                    <SafeZones values={centers} navigateCenter={navigateCenter} isNavigating={isNavigating} location={location} />
                     <Contacts contacts={hotlines} redirectToDial={redirectToDial} />
                 </View>
             )}
