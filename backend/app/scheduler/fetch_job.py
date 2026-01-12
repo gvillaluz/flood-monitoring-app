@@ -25,6 +25,7 @@ async def fetch_and_predict():
                 print("⚠️ Prediction skipped (Not enough history data)")
             
         print("Processed Data: ", data.id)
+        print("Server successfully fetched data.")
     except Exception as e:
         db.rollback()
         print(e)
