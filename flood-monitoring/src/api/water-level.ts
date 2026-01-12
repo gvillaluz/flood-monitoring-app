@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const HTTP_URL_DEVELOPMENT = 'https://flood-monitoring-app.onrender.com/api/water/live-data'
+const HTTP_URL_DEVELOPMENT = 'https://flood-monitoring-app.onrender.com/api/latest/flood-records'
 
 export async function fetchWaterLevels() {
     try {

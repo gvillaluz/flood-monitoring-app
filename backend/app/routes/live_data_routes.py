@@ -3,15 +3,14 @@ from fastapi import APIRouter, Depends
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
-from app.utils import time_utils
-from app.schemas.internal.water_level import WaterLevelModel
 from app.db.session import get_db
 from app.services.data_service import DataService
+from app.schemas.internal.flood_record import FloodRecordModel
 
 router = APIRouter()
 service = DataService()
 
-@router.get('/latest/flood-records', response_model=list[WaterLevelModel])
+@router.get('/latest/flood-records', response_model=list[FloodRecordModel])
 async def get_latest_data(db: Session = Depends(get_db)):
     try:
         flood_record = service.fetch_latest_flood_records(db)

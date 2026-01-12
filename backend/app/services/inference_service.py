@@ -63,7 +63,7 @@ class InferenceService():
     def update_flood_records(self, db: Session, record: FloodRecordModel, prediction):
         record.predicted_wl = prediction
             
-        if prediction >= 18.00:
+        if prediction >= 17.0:
             record.prediction_status = "Danger"
         elif prediction >= 16.0:
             record.prediction_status = "Warning"

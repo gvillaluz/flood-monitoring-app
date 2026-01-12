@@ -56,16 +56,16 @@ class NotificationService:
         
         return messaging.send(message)
     
-    def send_warning_to_all(self):
+    def send_warning_to_all(self, message: str):
         return self.send_broadcast(
             channel='warning-alerts',
             title='LigtasCheck AI Warning',
-            body='This is a warning from LigtasCheck AI'
+            body=message
         )
     
-    def send_critical_to_all(self):
+    def send_critical_to_all(self, message: str):
         return self.send_broadcast(
             channel='critical-alerts',
-            title='LigtasCheck AI Critical Alert',
-            body='This is a critical alert from LigtasCheck AI. Please evacuate immediately.'
+            title='LigtasCheck AI Alert',
+            body=message
         )

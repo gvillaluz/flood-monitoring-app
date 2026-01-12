@@ -21,8 +21,8 @@ async def register_device_token(payload: DeviceTokenModel,db: Session = Depends(
     
 @router.get('/send-broadcast')
 async def try_broadcast():
-    service.send_warning_to_all()
+    service.send_warning_to_all(message='Testing of warning notifications.')
     
 @router.get('/send-critical')
 async def critical_broadcast():
-    service.send_critical_to_all()
+    service.send_critical_to_all(message='Testing of danger notifications.')
