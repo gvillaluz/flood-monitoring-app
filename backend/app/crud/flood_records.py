@@ -19,3 +19,17 @@ def get_records_for_prediction(db: Session):
         .limit(60)
         .all()
     )
+    
+def update_record(db: Session, record: FloodRecordModel):
+    existing_record = db.query(FloodRecord).filter(FloodRecord.id == record.id).first()
+    
+    if existing_record is None:
+        return None
+    
+    existing_record.predicted_wl = record.predicted_wl
+    existing_record.prediction_status = record.prediction_status
+    
+    db.commit()
+    db.refresh(existing_record)
+    
+    return existing_record

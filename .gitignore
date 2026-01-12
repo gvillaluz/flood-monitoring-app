@@ -1,2 +1,4 @@
+venv
+service-account.json
 backend/venv
 backend/service-account.json

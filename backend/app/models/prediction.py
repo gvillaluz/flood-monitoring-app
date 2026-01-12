@@ -11,4 +11,5 @@ class Prediction(Base):
     wlchange = Column(Float, nullable=False)
     rf_mt_oro = Column(Float, nullable=False)
     rf_mt_sm = Column(Float, nullable=False)
+    predicted_wl = Column(Float, nullable=False)
     created_at = Column(DateTime, nullable=False, server_default=func.now())

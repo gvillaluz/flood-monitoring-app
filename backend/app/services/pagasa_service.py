@@ -66,9 +66,7 @@ class PagasaService:
             # water_level.create_water_level(db, water_obj)
             # rainfall.create_rainfall(db, rainfall_obj)
             
-            return {
-                "water": flood_obj
-            }
+            return flood_obj
             
         except Exception as e:
             print("Pagasa Service: ", e)
