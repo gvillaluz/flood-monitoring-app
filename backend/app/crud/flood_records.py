@@ -12,6 +12,14 @@ def create_flood_records(db: Session, flood_record: FloodRecordModel):
     
     return record
 
+def get_latest_flood_records(db: Session):
+    return (
+        db.query(FloodRecord)
+        .order_by(FloodRecord.timestr.desc())
+        .limit(7)
+        .all()
+    )
+
 def get_records_for_prediction(db: Session):
     return (
         db.query(FloodRecord)

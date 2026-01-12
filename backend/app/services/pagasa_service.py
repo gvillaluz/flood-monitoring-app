@@ -1,8 +1,6 @@
 import asyncio
 import httpx
 import app.utils.time_utils as time_utils
-from app.schemas.internal.rainfall import RainfallModel
-from app.schemas.internal.water_level import WaterLevelModel
 from app.crud import flood_records
 from app.schemas.pagasa.rainfall_response import PagasaRainfall
 from app.schemas.pagasa.water_response import PagasaWaterLevel
@@ -47,24 +45,6 @@ class PagasaService:
             )
             
             flood_records.create_flood_records(db, flood_obj)
-            
-            # water_obj = WaterLevelModel(
-            #     station_name = water_resp_obj.obsnm,
-            #     timestamp = water_resp_obj.timestr,
-            #     water_level = water_resp_obj.wl,
-            #     water_level_10m = water_resp_obj.wl10m,
-            #     water_level_change = water_resp_obj.wlchange
-            # )
-            
-            # rainfall_obj = RainfallModel(
-            #     station_name = rainfall_resp_obj.obsnm,
-            #     timestamp = rainfall_resp_obj.timestr,
-            #     rainfall = rainfall_resp_obj.rf,
-            #     rainfall_day = rainfall_resp_obj.rfday
-            # )
-            
-            # water_level.create_water_level(db, water_obj)
-            # rainfall.create_rainfall(db, rainfall_obj)
             
             return flood_obj
             
