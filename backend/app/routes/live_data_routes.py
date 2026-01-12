@@ -1,6 +1,5 @@
 from pprint import pprint
 from fastapi import APIRouter, Depends
-import httpx
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
@@ -12,7 +11,7 @@ from app.services.data_service import DataService
 router = APIRouter()
 service = DataService()
 
-@router.get('/water/live-data', response_model=list[WaterLevelModel])
+@router.get('/latest/flood-records', response_model=list[WaterLevelModel])
 async def get_latest_data(db: Session = Depends(get_db)):
     try:
         flood_record = service.fetch_latest_flood_records(db)

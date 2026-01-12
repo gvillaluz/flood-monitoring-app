@@ -8,5 +8,5 @@ class FloodRecordModel(BaseModel):
     rf_mt_oro: float
     rf_mt_sm: float
     
-    predicted_wl: float | None
-    prediction_status: str | None
+    predicted_wl: float | None = None
+    prediction_status: str | None = None
