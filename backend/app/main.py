@@ -5,7 +5,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.models.base import Base
 from app.db.session import SessionLocal, engine
 from app.models import evacuation_model, hotlines_model, device_token_model, flood_record_model
-from app.routes.prediction_routes import router as predict_router
 from app.scheduler.fetch_job import start_scheduler
 from app.routes.live_data_routes import router as live_data_router
 from app.routes.evacuation_routes import router as evacuation_router
