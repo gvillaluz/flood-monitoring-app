@@ -15,8 +15,8 @@ service = DataService()
 @router.get('/water/live-data', response_model=list[WaterLevelModel])
 async def get_latest_data(db: Session = Depends(get_db)):
     try:
-        water_level = service.fetch_latest_flood_records(db)
+        flood_record = service.fetch_latest_flood_records(db)
         
-        return water_level
+        return flood_record
     except Exception as e:
         raise HTTPException(status_code=404, detail="Failed to load water levels")
