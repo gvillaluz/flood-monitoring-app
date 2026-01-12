@@ -34,3 +34,4 @@ async def fetch_and_predict():
 def start_scheduler():
     scheduler.add_job(fetch_and_predict, "cron", minute="7,17,27,37,47,57")
     scheduler.start()
+    print("🚀 Scheduler has started in the background!")
