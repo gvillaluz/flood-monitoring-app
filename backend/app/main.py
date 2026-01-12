@@ -41,6 +41,10 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
+@app.get("/")
+async def root():
+    return {"status": "active", "message": "Flood Monitoring API is running"}
+
 app.include_router(predict_router, prefix='/api')
 app.include_router(live_data_router, prefix='/api')
 app.include_router(evacuation_router, prefix='/api')
