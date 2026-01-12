@@ -6,6 +6,8 @@ from app.services.inference_service import InferenceService
 pagasa_api_service = PagasaService()
 inference_service = InferenceService()
 
+scheduler = AsyncIOScheduler()
+
 async def fetch_and_predict():
     db = SessionLocal()
     
@@ -30,6 +32,5 @@ async def fetch_and_predict():
         db.close()
 
 def start_scheduler():
-    scheduler = AsyncIOScheduler()
     scheduler.add_job(fetch_and_predict, "cron", minute="7,17,27,37,47,57")
     scheduler.start()

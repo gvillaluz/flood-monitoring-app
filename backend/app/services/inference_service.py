@@ -72,4 +72,6 @@ class InferenceService():
             
         updated_record = update_record(db, record)
         
+        print("Updated flood record.")
+        
         return updated_record

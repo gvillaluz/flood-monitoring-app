@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL = 'http://192.168.1.57:8000/api'
+const URL = 'https://flood-monitoring-app.onrender.com/api'
 
 export async function fetchEvacuationCenters() {
     try {

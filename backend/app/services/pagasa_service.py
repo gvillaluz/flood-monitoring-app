@@ -45,6 +45,7 @@ class PagasaService:
             )
             
             flood_records.create_flood_records(db, flood_obj)
+            print("New flood record saved.")
             
             return flood_obj
             
