@@ -23,22 +23,23 @@ async def fetch_and_predict():
             if prediction is not None:
                 data = inference_service.update_flood_records(db, data, prediction)
                 print("Prediction Water Level: ", prediction)
+                
+                if data.predicted_wl >= 17.0:
+                    notification_service.send_critical_to_all(
+                        message=f'Water level is predicted to surge to {data.predicted_wl}m soon. Immediate evacuation will be required. Move to safe ground immediately.'
+                    )
+                elif data.predicted_wl >= 16.0:
+                    notification_service.send_warning_to_all(
+                        message=f'Water level is predicted to rise to {data.predicted_wl}m by the next hour. Residents in low-lying areas should consider evacuating now.'
+                    )
+                elif data.predicted_wl >= 15.0:
+                    notification_service.send_warning_to_all(
+                        message=f'Water level is predicted to reach the {data.predicted_wl}m threshold within the next hour. Residents should prepare survival kits and monitor updates.'
+                    )
+            
             else:
                 print("⚠️ Prediction skipped (Not enough history data)")
-            
-        if data.predicted_wl >= 17.0:
-            notification_service.send_critical_to_all(
-                message=f'Water level is predicted to surge to {data.predicted_wl}m soon. Immediate evacuation will be required. Move to safe ground immediately.'
-            )
-        elif data.predicted_wl >= 16.0:
-            notification_service.send_warning_to_all(
-                message=f'Water level is predicted to rise to {data.predicted_wl}m by the next hour. Residents in low-lying areas should consider evacuating now.'
-            )
-        elif data.predicted_wl >= 15.0:
-            notification_service.send_warning_to_all(
-                message=f'Water level is predicted to reach the {data.predicted_wl}m threshold within the next hour. Residents should prepare survival kits and monitor updates.'
-            )
-            
+
         print("Processed Data: ", data.id)
         print("Server successfully fetched data.")
     except Exception as e:

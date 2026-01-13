@@ -24,7 +24,7 @@ def get_records_for_prediction(db: Session):
     return (
         db.query(FloodRecord)
         .order_by(FloodRecord.timestr.desc())
-        .limit(60)
+        .limit(72)
         .all()
     )
     

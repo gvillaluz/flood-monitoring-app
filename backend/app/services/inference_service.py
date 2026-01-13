@@ -30,19 +30,32 @@ class InferenceService():
             data_dicts = [{k: v for k, v in vars(r).items() if k != '_sa_instance_state'} for r in flood_data]
             df = pd.DataFrame(data_dicts)
             
-            df.rename(columns={'rf_mt_oro': 'rain_mt_oro', 'rf_mt_sm': 'rain_mt_sm'}, inplace=True)
+            df = df.drop(columns=['predicted_wl', 'prediction_status', 'created_at', 'id'], errors='ignore')
+            
+            df.rename(columns={'rf_mt_oro': 'rf_mt_oro', 'rf_mt_sm': 'rf_mt_sm'}, inplace=True)
+            
+            df = df.sort_values(by='timestr', ascending=True).reset_index(drop=True)
+            
+            print("--- NaN DEBUG REPORT ---")
+            print(df.isna().sum()) 
+            print("------------------------")
+            
+            df['rf_mt_oro'] = df['rf_mt_oro'].fillna(0.0)
+            df['rf_mt_sm'] = df['rf_mt_sm'].fillna(0.0)
     
-            df['rain_oro_3hr_sum'] = df['rain_mt_oro'].rolling(window=18).sum()
-            df['rain_sm_3hr_sum'] = df['rain_mt_sm'].rolling(window=18).sum()
+            df['rf_oro_3hr_sum'] = df['rf_mt_oro'].rolling(window=18).sum()
+            df['rf_sm_3hr_sum'] = df['rf_mt_sm'].rolling(window=18).sum()
             df['wl_lag_1hr'] = df['wl'].shift(6)
             df['wl_lag_3hr'] = df['wl'].shift(18)
             
             df_clean = df.dropna().reset_index(drop=True)
-            if len(df_clean) < 36: return None
+            
+            if len(df_clean) < 36:
+                return None
             
             features = [
-                "wl", "wlchange", "rain_mt_oro", "rain_mt_sm",
-                "rain_oro_3hr_sum", "rain_sm_3hr_sum", "wl_lag_1hr", "wl_lag_3hr"
+                "wl", "wlchange", "rf_mt_oro", "rf_mt_sm",
+                "rf_oro_3hr_sum", "rf_sm_3hr_sum", "wl_lag_1hr", "wl_lag_3hr"
             ]
             
             input_window = df_clean.tail(36)

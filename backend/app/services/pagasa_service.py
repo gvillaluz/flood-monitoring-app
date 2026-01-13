@@ -46,10 +46,10 @@ class PagasaService:
                 rf_mt_sm=rf_sm_obj.rf
             )
             
-            flood_records.create_flood_records(db, flood_obj)
+            updated_record = flood_records.create_flood_records(db, flood_obj)
             print("New flood record saved.")
             
-            return flood_obj
+            return updated_record
             
         except Exception as e:
             print("Pagasa Service: ", e)

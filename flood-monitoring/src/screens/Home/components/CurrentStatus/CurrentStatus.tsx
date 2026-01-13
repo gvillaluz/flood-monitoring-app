@@ -22,7 +22,7 @@ export default function CurrentStatus() {
 
     return (
         <View
-            className="bg-primary_white rounded-2xl overflow-hidden p-6 gap-2"
+            className="bg-primary_white rounded-2xl overflow-hidden p-6 gap-2 flex-1"
             style={{
                 borderWidth: 1,
                 borderColor: 'rgba(18, 18, 18, 0.1)',
