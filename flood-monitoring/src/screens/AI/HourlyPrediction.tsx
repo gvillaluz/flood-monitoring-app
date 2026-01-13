@@ -1,9 +1,13 @@
+import { useFlood } from '@/src/hooks/useFlood'
 import { Text, View } from 'react-native'
+import DetailedPredictions from './components/DetailedPredictions'
 
 export default function HourlyPrediction() {
+    const { prediction } = useFlood()
+
     return (
         <View
-            className="bg-secondary_white rounded-2xl overflow-hidden p-6 gap-2"
+            className="bg-primary_white rounded-2xl overflow-hidden p-6 gap-2"
             style={{
                 borderWidth: 1,
                 borderColor: 'rgba(18, 18, 18, 0.1)',
@@ -22,6 +26,19 @@ export default function HourlyPrediction() {
             >
                 Hourly Prediction
             </Text>
+            <View
+                className="gap-2"
+            >
+                {(prediction?.length ?? 0) <= 0 ? (
+                    <Text
+                        className="text-normal font-roboto text-primary-black"
+                    >
+                        System is gathering data for initial prediction.
+                    </Text>
+                ) : (
+                    <DetailedPredictions readings={prediction ?? []} />
+                )}
+            </View>
         </View>
     )
 }

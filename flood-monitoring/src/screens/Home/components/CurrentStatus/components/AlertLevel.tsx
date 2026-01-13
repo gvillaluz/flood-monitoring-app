@@ -1,9 +1,9 @@
-import { WaterLevel } from "@/src/types/Flood"
+import { FloodRecord } from "@/src/types/Flood"
 import { Image, Text, View } from "react-native"
 
 type Props = {
     bgColor: string | undefined,
-    currentWL: WaterLevel | null
+    currentWL: FloodRecord | null
 }
 
 export default function AlertLevel({ bgColor, currentWL }: Props) {

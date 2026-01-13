@@ -1,12 +1,12 @@
-import { FloodRecord } from "@/src/types/Flood"
+import { FloodRecord, Prediction } from "@/src/types/Flood"
 import { formatTimeMinsHours } from "@/src/utils/time_utils"
 import { Image, Text, View } from "react-native"
 
 type ObjectProps = {
-    readings: FloodRecord[]
+    readings: Prediction[]
 }
 
-export default function ListDetail({ readings }: ObjectProps) {
+export default function DetailedPredictions({ readings }: ObjectProps) {
     return (
         <View
             className="gap-2"
@@ -32,7 +32,7 @@ export default function ListDetail({ readings }: ObjectProps) {
                         <Text
                             className="font-roboto text-normal text-primary_black"
                         >
-                            {detail.waterLevel}m
+                            {detail.predictionWater1h}m
                         </Text>
                     </View>
                     <Image 

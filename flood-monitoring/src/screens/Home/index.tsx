@@ -4,11 +4,16 @@ import PredictionAlert from "../../components/PredictionAlert"
 import CurrentStatus from "./components/CurrentStatus/CurrentStatus"
 import PredictionLevel from "./components/PredictionLevel"
 import { useFlood } from "@/src/hooks/useFlood"
+import { useEffect, useState } from "react"
+import { SplashScreen } from "expo-router"
 
 export default function HomeScreen() {
-    const { waterLevels, onRefresh, refreshing } = useFlood()
+    const { floodRecords, onRefresh, refreshing, prediction } = useFlood()
 
-    const isLoading = !waterLevels || waterLevels.length === 0
+    const firstPrediction = prediction?.[0];
+    const showAlert = (firstPrediction?.predictionWater1h ?? 0) >= 15.0;
+
+    const isLoading = !floodRecords || floodRecords.length === 0
 
     return (
         <ScrollView
@@ -33,9 +38,9 @@ export default function HomeScreen() {
             : <View
                 className="px-7 mt-[-60px] gap-5 pb-7"
             >
-                <PredictionAlert />
+                {showAlert && <PredictionAlert />}
                 <CurrentStatus />
-                <PredictionLevel meter={16.5} />
+                <PredictionLevel meter={floodRecords[0].predictedWaterLevel ?? 0.0} meterChange={floodRecords[0].waterLevelChange ?? 0.0} isRising={floodRecords[0].predictedWaterLevel ?? 0 >= floodRecords[0].waterLevel ? true : false} />
             </View>}
         </ScrollView>
     )

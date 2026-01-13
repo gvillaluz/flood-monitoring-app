@@ -1,9 +1,9 @@
 import { Text, View } from 'react-native'
 import ListDetail from './ListDetail'
-import { WaterLevel } from '@/src/types/Flood'
+import { FloodRecord } from '@/src/types/Flood'
 
 type ObjectProps = {
-    readings: WaterLevel[]
+    readings: FloodRecord[]
 }
 
 export default function DetailedReadings({ readings }: ObjectProps) {

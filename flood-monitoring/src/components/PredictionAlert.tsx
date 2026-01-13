@@ -1,7 +1,23 @@
 import { Ionicons } from '@expo/vector-icons'
 import { Text, View } from 'react-native'
+import { useFlood } from '../hooks/useFlood'
 
 export default function PredictionAlert() {
+    const { prediction, status } = useFlood()
+
+    const getMessage = () => {
+        if (!prediction || !status) return
+
+        const meter = prediction[0].predictionWater1h ?? 0
+
+        if (meter >= 17.0) 
+            return `Water level is predicted to surge to ${meter}m soon. Immediate evacuation will be required. Move to safe ground immediately.`
+        else if (meter >= 16.0)
+            return `Water level is predicted to rise to ${meter}m by the next hour. Residents in low-lying areas should consider evacuating now.`
+        else if (meter >= 15.0)
+            return `Water level is predicted to reach the ${meter}m threshold within the next hour. Residents should prepare survival kits and monitor updates.`
+    }
+
     return (
         <View
             className="p-2 py-5 flex-row gap-3 rounded-2xl w-[100%]"
@@ -25,7 +41,7 @@ export default function PredictionAlert() {
                 <Text
                     className="font-roboto text-[15px]"
                 >
-                   Water level will reach evacuation threshold by the next 2 hours. Consider evacuating.
+                   {getMessage()}
                 </Text>
             </View>
         </View>

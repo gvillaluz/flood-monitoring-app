@@ -5,10 +5,10 @@ import Level from "./components/Level"
 import { useFlood } from "@/src/hooks/useFlood"
 
 export default function DetailScreen() {
-    const { waterLevels, refreshing, onRefresh } = useFlood()
+    const { floodRecords, refreshing, onRefresh } = useFlood()
 
-    const peakLevel = waterLevels.reduce((prev, curr) => (curr.waterLevel > prev.waterLevel ? curr : prev), waterLevels[0])
-    const lowestLevel = waterLevels.reduce((prev, curr) => (curr.waterLevel < prev.waterLevel ? curr : prev), waterLevels[0])
+    const peakLevel = floodRecords.reduce((prev, curr) => (curr.waterLevel > prev.waterLevel ? curr : prev), floodRecords[0])
+    const lowestLevel = floodRecords.reduce((prev, curr) => (curr.waterLevel < prev.waterLevel ? curr : prev), floodRecords[0])
 
     return (
         <ScrollView
@@ -29,7 +29,7 @@ export default function DetailScreen() {
             <View
                 className="px-7 mt-[-60px] gap-5 pb-7"
             >
-                <DetailedReadings readings={waterLevels} />
+                <DetailedReadings readings={floodRecords} />
                 
                 <View
                     className="flex-row justify-between items-center gap-2"

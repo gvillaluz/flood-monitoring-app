@@ -1,24 +1,24 @@
 import { ReactNode } from "react"
 
-export interface WaterLevel {
-    stationName: string,
+export interface FloodRecord {
     timestamp: Date,
     waterLevel: number
-    waterLevel10m: number | null
     waterLevelChange: number | null
+    predictedWaterLevel: number | null
+    predictionStatus: string | null
     isRising: boolean | null
 }
 
 export interface Prediction {
     timestamp: Date,
-    predictionWater1h: number,
-    predictionWater2h: number 
+    predictionWater1h: number | null,
+    isRising: boolean | null
 }
 
 export interface FloodContextValue {
-    waterLevels: WaterLevel[],
-    prediction?: Prediction,
-    risk: string,
+    floodRecords: FloodRecord[],
+    prediction?: Prediction[],
+    status: string,
     onRefresh: () => void,
     refreshing: boolean
 }

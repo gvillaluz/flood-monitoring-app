@@ -1,5 +1,5 @@
 import { fetchWaterLevels } from "../api/water-level";
-import { WaterLevel } from "../types/Flood";
+import { FloodRecord } from "../types/Flood";
 import { getCacheWaterLevels, setCacheWaterLevels } from "../utils/cache";
 
 async function resolveWaterLevel(isConnected: boolean) {
@@ -7,34 +7,34 @@ async function resolveWaterLevel(isConnected: boolean) {
 
     if (!isConnected && cache?.data) {
         return {
-            waterLevels: cache?.data,
+            floodRecords: cache?.data,
             source: "cache"
         }
     }
     
-    const waterLevels = await fetchWaterLevels()
+    const floodRecords = await fetchWaterLevels()
 
-    if (!waterLevels)
+    if (!floodRecords)
         return null
 
-    await setCacheWaterLevels(waterLevels)
+    await setCacheWaterLevels(floodRecords)
 
     return {
-        waterLevels,
+        floodRecords,
         source: "network"
     }
 }
 
-function mapWaterLevels(waterLevels: WaterLevel[]) {
-    const mappedWaterLevels: WaterLevel[] = waterLevels
+function mapFloodRecords(floodRecords: FloodRecord[]) {
+    const mappedFloodRecords: FloodRecord[] = floodRecords
         .map(
             (w: any, index: number, arr: any[]) => (
                 {
-                    stationName: w.station_name,
                     timestamp: new Date(w.timestr),
                     waterLevel: w.wl,
-                    waterLevel10m: w.wl_10m,
                     waterLevelChange: w.wl_change,
+                    predictedWaterLevel: w.predicted_wl,
+                    predictionStatus: w.prediction_status,
                     isRising: 
                         index < arr.length - 1
                         ? (w.wl === arr[index + 1].wl
@@ -46,22 +46,22 @@ function mapWaterLevels(waterLevels: WaterLevel[]) {
         )
         .slice(0, 6)
 
-        return mappedWaterLevels
+        return mappedFloodRecords
 }
 
-export async function getWaterLevels(isConnected: boolean) {
+export async function getFloodRecords(isConnected: boolean) {
     const result = await resolveWaterLevel(isConnected)
 
-    if (!result?.waterLevels)
+    if (!result?.floodRecords)
         throw new Error("Live water levels are unavailable")
 
-    const waterLevels = mapWaterLevels(result.waterLevels)
+    const floodRecords = mapFloodRecords(result.floodRecords)
 
-    if (!waterLevels)
+    if (!floodRecords)
         throw new Error("Failed to process water levels")
 
     return {
-        waterLevels,
+        floodRecords,
         source: result.source
     }
 }

@@ -1,12 +1,12 @@
 import { Image, Text, View } from 'react-native'
 import ArrowDown from '../../../../assets/images/lowest-level.png'
 import ArrowUp from '../../../../assets/images/peak-level.png'
-import { WaterLevel } from '@/src/types/Flood'
+import { FloodRecord } from '@/src/types/Flood'
 import { formatTimeMinsHours } from '@/src/utils/time_utils'
 
 type ObjectProps = {
     isPeak: boolean,
-    values: WaterLevel
+    values: FloodRecord
 }
 
 export default function Level({ isPeak, values }: ObjectProps) {

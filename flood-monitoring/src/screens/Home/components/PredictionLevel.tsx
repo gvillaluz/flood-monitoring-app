@@ -1,10 +1,12 @@
 import { Image, Text, View } from "react-native";
 
 type Props = {
-    meter: number
+    meter: number,
+    meterChange: number,
+    isRising: boolean
 }
 
-export default function PredictionLevel({ meter }: Props) {
+export default function PredictionLevel({ meter, meterChange, isRising }: Props) {
     return (
         <View
             className="bg-secondary_white rounded-2xl overflow-hidden p-6 gap-2"
@@ -45,24 +47,30 @@ export default function PredictionLevel({ meter }: Props) {
                             lineHeight: 24
                         }}
                     >
-                        Next 2 hours
+                        Next hour
                     </Text>
                     <Text
-                        className="font-bold font-roboto text-[45px] text-primary_white"
+                        className="font-bold font-roboto text-primary_white"
+                        style={{
+                            fontSize: meter > 0.0 ? 45 : 30
+                        }}
                     >
-                        {meter}m
+                        {meter > 0.0 ? meter + "m" : "Calibrating..."}
                     </Text>
                     <Text
                         className="font-roboto text-normal text-critical_red"
                     >
-                        + 1.0m increase
+                        {isRising? `+ ${meterChange}m increase` : `- ${meterChange}m decrease`}
                     </Text>
                 </View>
                 <View
                     className="justify-center pr-4"
                 >
                     <Image 
-                        source={require('../../../../assets/images/level-2.png')}
+                        source={isRising
+                            ? require('../../../../assets/images/level-2.png')
+                            : require('../../../../assets/images/level-down.png')
+                        }
                         style={{
                             height: 70,
                             width: 70

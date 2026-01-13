@@ -1,8 +1,8 @@
 import { createContext, useEffect, useRef, useState } from "react";
 import { AppState, AppStateStatus } from "react-native";
 import { msUntilNextMinute } from "../utils/time_utils";
-import { FloodContextValue, FloodProviderProps, WaterLevel, Prediction } from "../types/Flood";
-import { getWaterLevels } from "../services/waterLevelService";
+import { FloodContextValue, FloodProviderProps, FloodRecord, Prediction } from "../types/Flood";
+import { getFloodRecords } from "../services/waterLevelService";
 import { useNetwork } from "../hooks/useNetwork";
 
 export const FloodContext  = createContext<FloodContextValue | undefined>(undefined);
@@ -10,9 +10,9 @@ export const FloodContext  = createContext<FloodContextValue | undefined>(undefi
 export function FloodProvider({ children }: FloodProviderProps) {
     const { isConnected } = useNetwork()
 
-    const [waterLevels, setWaterLevels] = useState<WaterLevel[]>([])
-    const [prediction, setPrediction] = useState<Prediction>()
-    const [risk, setRisk] = useState<string>("")
+    const [floodRecords, setFloodRecords] = useState<FloodRecord[]>([])
+    const [prediction, setPrediction] = useState<Prediction[]>([])
+    const [status, setStatus] = useState<string>("")
     const [refreshing, setRefreshing] = useState<boolean>(false)
     
     const timeoutRef = useRef<ReturnType<typeof setTimeout>>(null)
@@ -23,9 +23,21 @@ export function FloodProvider({ children }: FloodProviderProps) {
 
     const loadData = async (): Promise<void> => {
         try {
-            const data = await getWaterLevels(isConnected)
+            const data = await getFloodRecords(isConnected)
+            setFloodRecords(data.floodRecords)
             
-            setWaterLevels(data.waterLevels)
+            if (data.floodRecords.length && data.floodRecords[0].predictedWaterLevel !== null) {
+                const predictions = data.floodRecords.map(d => ({
+                    timestamp: d.timestamp,
+                    predictionWater1h: d.predictedWaterLevel,
+                    isRising:
+                        d.predictedWaterLevel != null &&
+                        d.predictedWaterLevel > d.waterLevel
+                }))
+
+                setPrediction(predictions)
+                setStatus(data.floodRecords[0].predictionStatus ?? "")
+            }
         } catch (err) {
             console.log("Unable to fetch data. -- FloodProvider")
             console.log(err)
@@ -77,9 +89,9 @@ export function FloodProvider({ children }: FloodProviderProps) {
     }
 
     const data = {
-        waterLevels,
+        floodRecords,
         prediction,
-        risk,
+        status,
         onRefresh,
         refreshing
     }

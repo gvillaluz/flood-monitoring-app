@@ -5,7 +5,10 @@ import HourlyPrediction from './HourlyPrediction'
 import { useFlood } from '@/src/hooks/useFlood'
 
 export default function AIScreen() {
-    const { onRefresh, refreshing } = useFlood()
+    const { onRefresh, refreshing, prediction } = useFlood()
+
+    const firstPrediction = prediction?.[0];
+    const showAlert = (firstPrediction?.predictionWater1h ?? 0) >= 15.0;
 
     return (
         <ScrollView
@@ -26,7 +29,7 @@ export default function AIScreen() {
             <View
                 className="px-7 mt-[-60px] gap-5 pb-7"
             >
-                <PredictionAlert />
+                {showAlert && <PredictionAlert />}
                 <HourlyPrediction />
             </View>
         </ScrollView>

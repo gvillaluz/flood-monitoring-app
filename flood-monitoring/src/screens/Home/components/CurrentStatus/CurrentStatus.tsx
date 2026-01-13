@@ -3,9 +3,9 @@ import AlertLevel from "./components/AlertLevel";
 import { useFlood } from "@/src/hooks/useFlood";
 
 export default function CurrentStatus() {
-    const { waterLevels } = useFlood()
+    const { floodRecords } = useFlood()
 
-    const currentWaterLevel = waterLevels.length > 0 ? waterLevels[0] : null
+    const currentWaterLevel = floodRecords.length > 0 ? floodRecords[0] : null
 
     const getBgColor = () => {
         if (!currentWaterLevel?.waterLevel) return "rgba(156, 163, 175, 1)"
@@ -22,7 +22,7 @@ export default function CurrentStatus() {
 
     return (
         <View
-            className="bg-secondary_white rounded-2xl overflow-hidden p-6 gap-2"
+            className="bg-primary_white rounded-2xl overflow-hidden p-6 gap-2"
             style={{
                 borderWidth: 1,
                 borderColor: 'rgba(18, 18, 18, 0.1)',
@@ -48,7 +48,10 @@ export default function CurrentStatus() {
                 className="flex-row justify-between flex-1"
             >
                 <View
-                    className="bg-primary_white h-[77px] w-[145px] rounded-2xl p-2"
+                    className="h-[77px] w-[145px] rounded-2xl p-2"
+                    style={{
+                        backgroundColor: '#F9FAFB'
+                    }}
                 >
                     <Text
                         className="font-roboto text-normal text-secondary_black"

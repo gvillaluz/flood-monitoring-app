@@ -1,10 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as NavigationBar from 'expo-navigation-bar';
-import { useRouter } from "expo-router";
+import { SplashScreen, useRouter } from "expo-router";
 import { useEffect } from "react";
-import { ActivityIndicator, View } from "react-native";
+import { ActivityIndicator, Image, View } from "react-native";
 import LigtasCheckLogo from '../components/LigtasCheckLogo';
 import { getIsOnboarded } from '../utils/cache';
+
+SplashScreen.preventAutoHideAsync()
 
 export default function Index() {
   const router = useRouter();
@@ -12,8 +14,6 @@ export default function Index() {
   useEffect(() => {
     const checkOnBoard = async () => {
       const hasSeenOnBoard = await getIsOnboarded()
-
-      await new Promise(resolve => setTimeout(resolve, 1500))
 
       if (!hasSeenOnBoard || hasSeenOnBoard === 'false') {
         router.replace('/onboarding')
@@ -29,14 +29,18 @@ export default function Index() {
 
   return (
     <View
-      className='flex-1 justify-center items-center'
+      style={{
+        backgroundColor: "#F5F5F5",
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}
     >
-      <LigtasCheckLogo />
-      <ActivityIndicator 
-        size='large' 
-        color='rgba(34, 90, 227, 1)'
-        className='mt-8'
-        style={{ transform: [{ scale: 2 }] }}
+      <Image 
+        source={require('../../assets/icons/splash-icon-light.png')}
+        style={{
+          resizeMode: "contain",
+          width: 200
+        }}
       />
     </View>
   )
