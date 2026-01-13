@@ -31,15 +31,15 @@ function mapWaterLevels(waterLevels: WaterLevel[]) {
             (w: any, index: number, arr: any[]) => (
                 {
                     stationName: w.station_name,
-                    timestamp: new Date(w.timestamp),
-                    waterLevel: w.water_level,
-                    waterLevel10m: w.water_level_10m,
-                    waterLevelChange: w.water_level_change,
+                    timestamp: new Date(w.timestr),
+                    waterLevel: w.wl,
+                    waterLevel10m: w.wl_10m,
+                    waterLevelChange: w.wl_change,
                     isRising: 
                         index < arr.length - 1
-                        ? (w.water_level === arr[index + 1].water_level
-                            ? (index + 2 < arr.length ? w.water_level > arr[index + 2].water_level : false)
-                            : w.water_level > arr[index + 1].water_level)
+                        ? (w.wl === arr[index + 1].wl
+                            ? (index + 2 < arr.length ? w.wl > arr[index + 2].wl : false)
+                            : w.wl > arr[index + 1].wl)
                         : false
                 }
             )

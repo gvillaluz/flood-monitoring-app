@@ -1,7 +1,8 @@
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 def generate_formatted_date():
-    now = datetime.now() 
+    now = datetime.now(ZoneInfo("Asia/Manila")) 
     
     current_min = now.minute 
     min_in_tens = (current_min // 10) * 10 

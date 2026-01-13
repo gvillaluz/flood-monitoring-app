@@ -16,19 +16,21 @@ class PagasaService:
         self.client = httpx.AsyncClient()
         
     async def fetch_all_data(self, db):
+        request_time = time_utils.generate_formatted_date()
+        
         try:
             water_resp, rf_oro, rf_sm = await asyncio.gather(
                 self.client.post(self.water_level_url, data={
                     "obscd": self.water_code,
-                    "ymdhm": time_utils.generate_formatted_date()
+                    "ymdhm": request_time
                 }),
                 self.client.post(self.rainfall_url, data={
                     "obscd": self.rain_mt_oro,
-                    "ymdhm": time_utils.generate_formatted_date()
+                    "ymdhm": request_time
                 }),
                 self.client.post(self.rainfall_url, data={
                     "obscd": self.rain_sm,
-                    "ymdhm": time_utils.generate_formatted_date()
+                    "ymdhm": request_time
                 })
             )
             

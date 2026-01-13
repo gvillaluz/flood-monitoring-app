@@ -29,6 +29,8 @@ class InferenceService():
             
             data_dicts = [{k: v for k, v in vars(r).items() if k != '_sa_instance_state'} for r in flood_data]
             df = pd.DataFrame(data_dicts)
+            
+            df.rename(columns={'rf_mt_oro': 'rain_mt_oro', 'rf_mt_sm': 'rain_mt_sm'}, inplace=True)
     
             df['rain_oro_3hr_sum'] = df['rain_mt_oro'].rolling(window=18).sum()
             df['rain_sm_3hr_sum'] = df['rain_mt_sm'].rolling(window=18).sum()
