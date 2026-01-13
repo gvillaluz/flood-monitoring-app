@@ -57,7 +57,7 @@ class InferenceService():
             
             prediction_real = self.scaler_y.inverse_transform(y_pred_scaled)
             
-            float(prediction_real[0][0])
+            print("PREDICION: ", float(prediction_real[0][0]))
             
             return float(prediction_real[0][0])
             
