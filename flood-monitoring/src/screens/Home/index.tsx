@@ -1,11 +1,12 @@
 import GradientHeader from "@/src/components/GradientHeader"
-import { ActivityIndicator, RefreshControl, ScrollView, View } from "react-native"
+import { ActivityIndicator, RefreshControl, ScrollView, View, Text } from "react-native"
 import PredictionAlert from "../../components/PredictionAlert"
 import CurrentStatus from "./components/CurrentStatus/CurrentStatus"
 import PredictionLevel from "./components/PredictionLevel"
 import { useFlood } from "@/src/hooks/useFlood"
 import { useEffect, useState } from "react"
 import { SplashScreen } from "expo-router"
+
 
 export default function HomeScreen() {
     const { floodRecords, onRefresh, refreshing, prediction } = useFlood()
@@ -14,6 +15,12 @@ export default function HomeScreen() {
     const showAlert = (firstPrediction?.predictionWater1h ?? 0) >= 15.0;
 
     const isLoading = !floodRecords || floodRecords.length === 0
+
+    const isRising = firstPrediction?.isRising
+
+    useEffect(() => {
+        SplashScreen.hideAsync()
+    }, [])
 
     return (
         <ScrollView
@@ -40,7 +47,17 @@ export default function HomeScreen() {
             >
                 {showAlert && <PredictionAlert />}
                 <CurrentStatus />
-                <PredictionLevel meter={floodRecords[0].predictedWaterLevel ?? 0.0} meterChange={floodRecords[0].waterLevelChange ?? 0.0} isRising={floodRecords[0].predictedWaterLevel ?? 0 >= floodRecords[0].waterLevel ? true : false} />
+                <PredictionLevel meter={floodRecords[0].predictedWaterLevel ?? 0.0} meterChange={floodRecords[0].waterLevelChange ?? 0.0} isRising={isRising ?? false} />
+                
+                <View
+                    className="flex-1 mt-[30px]"
+                >
+                    <Text
+                        className="text-center text-gray-400"
+                    >
+                        Data Source: PAGASA - Philippine Atmospheric, Geophysical and Astronomical Services Administration
+                    </Text>
+                </View>
             </View>}
         </ScrollView>
     )

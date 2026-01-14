@@ -1,5 +1,7 @@
 import LigtasCheckLogo from '@/src/components/LigtasCheckLogo';
 import { LinearGradient } from 'expo-linear-gradient';
+import { SplashScreen } from 'expo-router';
+import { useEffect } from 'react';
 import { Text, View } from 'react-native';
 
 type Props = {
@@ -7,6 +9,10 @@ type Props = {
 }
 
 export default function FirstScreen({ width }: Props) {
+    useEffect(() => {
+        SplashScreen.hideAsync()
+    }, [])
+
     return (
         <LinearGradient
             colors={['rgba(43, 106, 237, 1)', 'rgba(39, 198, 239, 1)']}

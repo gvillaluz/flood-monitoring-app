@@ -1,6 +1,6 @@
 import GradientHeader from '@/src/components/GradientHeader'
 import PredictionAlert from '@/src/components/PredictionAlert'
-import { RefreshControl, ScrollView, View } from 'react-native'
+import { RefreshControl, ScrollView, View, Text } from 'react-native'
 import HourlyPrediction from './HourlyPrediction'
 import { useFlood } from '@/src/hooks/useFlood'
 
@@ -31,6 +31,15 @@ export default function AIScreen() {
             >
                 {showAlert && <PredictionAlert />}
                 <HourlyPrediction />
+                <View
+                    className="flex-1 mt-[30px]"
+                >
+                    <Text
+                        className="text-center text-gray-400"
+                    >
+                        Data Source: PAGASA - Philippine Atmospheric, Geophysical and Astronomical Services Administration
+                    </Text>
+                </View>
             </View>
         </ScrollView>
     )

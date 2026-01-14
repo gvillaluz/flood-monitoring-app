@@ -8,7 +8,7 @@ export default function PredictionAlert() {
     const getMessage = () => {
         if (!prediction || !status) return
 
-        const meter = prediction[0].predictionWater1h ?? 0
+        const meter = 17
 
         if (meter >= 17.0) 
             return `Water level is predicted to surge to ${meter}m soon. Immediate evacuation will be required. Move to safe ground immediately.`

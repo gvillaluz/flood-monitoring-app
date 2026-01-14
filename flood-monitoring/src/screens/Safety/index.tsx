@@ -1,5 +1,5 @@
 import GradientHeader from "@/src/components/GradientHeader";
-import { ActivityIndicator, Alert, RefreshControl, ScrollView, View } from "react-native";
+import { ActivityIndicator, Alert, RefreshControl, ScrollView, View, Text } from "react-native";
 import Contacts from "./components/Contacts";
 import SafeZones from "./components/SafeZones";
 import { useEffect, useState } from "react";
@@ -103,6 +103,15 @@ export default function SafetyScreen() {
                 >
                     <SafeZones values={centers} navigateCenter={navigateCenter} isNavigating={isNavigating} location={location} />
                     <Contacts contacts={hotlines} redirectToDial={redirectToDial} />
+                    <View
+                        className="flex-1 mt-[30px]"
+                    >
+                        <Text
+                            className="text-center text-gray-400"
+                        >
+                            Data Source: PAGASA - Philippine Atmospheric, Geophysical and Astronomical Services Administration
+                        </Text>
+                    </View>
                 </View>
             )}
         </ScrollView>

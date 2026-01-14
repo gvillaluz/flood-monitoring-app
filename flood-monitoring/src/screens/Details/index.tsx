@@ -1,5 +1,5 @@
 import GradientHeader from "@/src/components/GradientHeader"
-import { RefreshControl, ScrollView, View } from "react-native"
+import { RefreshControl, ScrollView, View, Text } from "react-native"
 import DetailedReadings from "./components/DetailedReadings"
 import Level from "./components/Level"
 import { useFlood } from "@/src/hooks/useFlood"
@@ -36,6 +36,15 @@ export default function DetailScreen() {
                 >
                     <Level isPeak={true} values={peakLevel} />
                     <Level isPeak={false} values={lowestLevel} />
+                </View>
+                <View
+                    className="flex-1 mt-[30px]"
+                >
+                    <Text
+                        className="text-center text-gray-400"
+                    >
+                        Data Source: PAGASA - Philippine Atmospheric, Geophysical and Astronomical Services Administration
+                    </Text>
                 </View>
             </View>
         </ScrollView>

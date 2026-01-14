@@ -55,12 +55,15 @@ export default function PredictionLevel({ meter, meterChange, isRising }: Props)
                             fontSize: meter > 0.0 ? 45 : 30
                         }}
                     >
-                        {meter > 0.0 ? meter + "m" : "Calibrating..."}
+                        {meter > 0.0 ? meter.toFixed(2) + "m" : "Calibrating..."}
                     </Text>
                     <Text
-                        className="font-roboto text-normal text-critical_red"
+                        className="font-roboto text-normal"
+                        style={{
+                            color: isRising ? 'rgba(200, 50, 30, 1)' : '#39E3A8'
+                        }}
                     >
-                        {isRising? `+ ${meterChange}m increase` : `- ${meterChange}m decrease`}
+                        {isRising? `+ increase` : `— decrease`}
                     </Text>
                 </View>
                 <View
@@ -69,7 +72,7 @@ export default function PredictionLevel({ meter, meterChange, isRising }: Props)
                     <Image 
                         source={isRising
                             ? require('../../../../assets/images/level-2.png')
-                            : require('../../../../assets/images/level-down.png')
+                            : require('../../../../assets/images/decreasing arrow.png')
                         }
                         style={{
                             height: 70,
